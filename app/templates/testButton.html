@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block head %}
+<script>
+$(function() {
+  $('#testButton').bind('click', function() {
+    $.getJSON($SCRIPT_ROOT + '/_getData', {
+      //first: "Bob",
+      //last: "Bobbington",
+      //request: "17-09-2017T08:00"
+    }, function() {};
+      /*$.each(data.response, function(index, value){
+		  var that = value;
+		  console.log(that);
+		  $.each(value, function(key, val){
+			  var respTitle = that.title;
+			  var respStart = that.start;
+			  $('#result').text(that.title);
+			  console.log(key);
+			  $('#result').append('<span> Title Name: '
+			  + respTitle
+			  + ' and Start: '
+			  + respStart
+			  + '</span>');*/
+		 //$('#result').text(data);
+	  });
+    });
+    return false;
+  });
+  $('#testButton2').bind('click', function() {
+	  $.get($SCRIPT_ROOT + '/_getData', "string", null, 'text');
+  });
+});
+</script>
+{% endblock %}
+{% block content %}
+  <div>
+    <button type="button" onclick="window.location.href='{{ url_for('getData') }}';">test</button>
+  </div>
+  <div>
+    <span id="result"></span>
+  <div>
+  
+  <div>{% for i in range(request.args.get('count')|int) %}
+    <div>
+		{{ request.args.get('title' + (i|string)) }} at {{ request.args.get('startTime' + (i|string)) }} on {{ request.args.get('startDate' + (i|string)) }}
+    </div></br>{% endfor %}
+  	  </div>
+{% endblock %}

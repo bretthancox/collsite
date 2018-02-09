@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Sign In</h1>
+  <div id="loginForm_main">
+  <form action="/login" method="post" id="loginForm">
+      <div class="form-group">
+      {{ form.csrf }}
+      {{ form.hidden_tag() }}
+          <div class="input-field">{{ form.username.label }}</div><br>
+          <div class="input-field">{{ form.username(id="username", class="form-control") }}</div><br>
+      <p>
+          <div class="input-field">{{ form.password.label }}</div><br>
+          <div class="input-field">{{ form.password(id="password", class="form-control") }}</div><br>
+      </p>
+      <p><button type="submit" class="btn btn-success">Sign in</p>
+    </div>
+  </form>
+</div>
+{% endblock %}

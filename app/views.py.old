@@ -1,0 +1,87 @@
+from flask import render_template, jsonify, request, g, redirect, url_for, flash
+from app import app
+#from .forms import LoginForm
+from flaskext.couchdb import CouchDBManager, Document, TextField, DateField, BooleanField
+from werkzeug.local import LocalProxy
+from .formBase import bookingForm
+
+
+manager = CouchDBManager()  #instantiate
+manager.setup(app)  #start
+
+class Booking(Document):  #class for interrogating CouchDB
+	title = TextField()
+	start = TextField()
+
+class NewBooking(Document):  #class for interrogating CouchDB
+    book_name = TextField()
+    book_email = TextField()
+    book_date = TextField()
+    book_time = TextField()
+    book_confirmation = BooleanField(default=False)
+
+couch = LocalProxy(lambda: g.couch)  #g is a threading thing from
+                                      #flask. This lets it be dropped
+                                      
+
+#@app.route('/')
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    form = bookingForm(request.form)
+    
+    print(form.errors)
+    if request.method == 'POST' and form.validate():
+        name = request.form['name']
+        email = request.form['email']
+        booking_date = request.form['booking_date']
+        booking_time = request.form['booking_time']
+        flash(name + ' ' + email + ' ' + booking_date + ' ' + booking_time)
+        booking_store = NewBooking(book_name = name, book_email = email, book_date = booking_date, book_time = booking_time)
+        booking_store.store()
+    elif form.validate() is False:
+        flash(form.errors)
+    else:
+        flash('Testing')
+    
+    return render_template("index.html",
+                           title='Home',
+                           form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('login.html', 
+                           title='Sign In',
+                           form=form)
+#check https://stackoverflow.com/questions/19141073/rendering-a-python-dict-in-jinja2-werkzeug for info about using a list of dicts correctly
+
+                          
+
+@app.route('/testButton')
+def testButton():
+    bookings_get = request.args.getlist('bookings')
+    if bookings_get:
+	    return render_template('testButton.html', title='Test only', bookings=bookings_get)
+    else:
+	    return render_template('testButton.html', title='Test only')
+
+
+@app.route('/_getBookings', methods=['GET'])
+def getBookings():  # bookingsImprove preps unique keys for each record
+    bookings = [Booking.load(k) for k in couch]  #list of all docs in db
+    bookingsImprove = []  #dict for next step
+    number = 0  #counter
+    for dictions in bookings:
+        bookingsImprove.append({'title': dictions.title, 'start': dictions.start})
+        number += 1
+    return jsonify(bookingsImprove)
+    pass
+
+
+#@app.route('/_addToDb', methods=['PUT'])
+#def saveBookings():
+
+@app.route('/about')
+def aboutPage():
+    return render_template('about.html', title='About')

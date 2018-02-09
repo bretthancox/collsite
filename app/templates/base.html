@@ -1,0 +1,77 @@
+<html>
+  <head> 
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <script src="{{ url_for('static', filename='moment.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar-static-top.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-theme.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fullcalendar.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fullcalendar.print.min.css') }}" media="print">
+  <script src="{{ url_for('static', filename='fullcalendar.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='gcal.min.js') }}"></script>
+  <!--<link rel="icon" href="data:;base64,iVBORw0KGgo=">-->
+  <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
+  <script type=text/javascript>
+  $(function() {
+	  var loc = window.location.href;
+	  $("li").removeClass('active');
+	  if(/index/.test(loc)) {		  
+		  $("#home").addClass('active');
+	  } else if(/testButton/.test(loc)) {
+		  $("#test").addClass('active');
+	  } else if(/about/.test(loc)) {
+		  $("#about").addClass('active');
+	  }
+  });
+  </script>
+  <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
+  <script src="{{ url_for('static', filename='fullcalendarJquery.js') }}"></script>
+<style>
+
+	body {
+		margin: 40px 10px;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+</style>
+    {% block head %}{% endblock %}
+    <title>Colleen Hancox Lacrosse</title>
+</head>
+
+<div class="container">
+
+      
+    <nav>
+      <div class="nav-wrapper green darken-2">
+        <a href="#" class="brand-logo center">Colleen Hancox Lacrosse</a>
+          <ul class="right hide-on-med-and-down">
+              <li id="home" class="active"><a href="{{ url_for('index') }}">Home</a></li>
+              <li id="about"><a href="{{ url_for('aboutPage') }}">About</a></li>
+              <li id="login"><a href="{{ url_for('login') }}">Login</a></li>
+              <li id="contact"><a href="#">Contact</a></li>
+          </ul>
+       </div>
+     </nav>
+
+  <body>
+          {% block content %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<html>
+  <head> 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $('#calendar').fullcalendar({ 
+      businessHours: [
+        {
+          dow: [ 1, 2, 3, 4, 5, 6 ],
+          start: '14:00',
+          end: '19:00'
+        },
+        {
+          dow: [ 1, 4, 7 ],
+          start: '10:00',
+          end: '13:00'
+        }
+      ]
+} )});
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.5.1/fullcalendar.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.5.1/fullcalendar.min.js"></script>
+    {% if title %}
+    <title>{{ title }} - microblog</title>
+    {% else %}
+    <title>Welcome to microblog</title>
+    {% endif %}
+  </head>
+  <body>
+    <div>Microblog: <a href="/index">Home</a></div>
+    <hr>
+    <div id="calendar"></div>
+    {% block content %}{% endblock %}
+  </body>
+</html>
